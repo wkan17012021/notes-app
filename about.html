@@ -1,0 +1,141 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>PWA Notes App</title>
+    <link
+      rel="shortcut icon"
+      href="/assets/notes-note-svgrepo-com.svg"
+      type="image/x-icon"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+      integrity="sha512-UJfAaOlIRtdR+0P6C3KUoTDAxVTuy3lnSXLyLKlHYJlcSU8Juge/mjeaxDNMlw9LgeIotgz5FP8eUQPhX1q10A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/assets/icons/icon-96x96.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#aa7700" />
+    <meta name="theme-color" content="#FFE1C4" />
+  </head>
+  <body class="grey lighten-4">
+    <!-- top nav -->
+    <nav class="z-depth-0">
+      <div class="nav-wrapper container">
+        <a href="/">PWA: <span>Notes App</span></a>
+        <span class="right grey-text text-darken-1">
+          <img
+            src="./assets/icons/burger-menu-right-svgrepo-com.svg"
+            alt="burger menu icon"
+            class="material-icons sidenav-trigger"
+            data-target="side-menu"
+          />
+        </span>
+      </div>
+    </nav>
+
+    <!-- side nav -->
+    <ul id="side-menu" class="sidenav side-menu">
+      <li><a href="/" class="waves-effect">Home</a></li>
+      <li><a href="/about.html" class="waves-effect">About</a></li>
+      <li><div class="divider"></div></li>
+      <li>
+        <a href="/contact.html" class="waves-effect">
+          <img
+            src="./assets/icons/mail-svgrepo-com.svg"
+            alt="envelope contact icon"
+          />
+          Contact</a
+        >
+      </li>
+    </ul>
+
+    <!-- content -->
+    <div class="container grey-text">
+      <h1>
+        Creating a progressive web app with HTML, CSS, JS and Firebase backend
+        service
+      </h1>
+      <h2>Manifest JSON file</h2>
+      <p>
+        This is a single json file which provides metadata about our application
+        to the browser. The manifest file for this app includes the naming, the
+        url that should load when the user clicks or taps the icon to open the
+        app. The display type which can be set to browser, if you want the app
+        to open in a users preferred browser. Otherwise, set to standalone which
+        will load natively like a mobile app. Background color which will be
+        shown when the app loads (splash screen). Icons array to load
+        appropriately for different devices.
+      </p>
+      <h2>Service Workers (SWs)</h2>
+      <p>
+        Perhaps the most crucial component to a PWA. These javascript files
+        allow for loading content when offline. When the user interacts when
+        offline, the result is computed once they get online again, known as
+        background sync. SWs allow for push notifications - notifications on new
+        content, messages, updated content etc.
+      </p>
+      <h3>How do SWs operate?</h3>
+      <p>
+        Traditionally, JS files are tightly coupled with the DOM along a single
+        thread when requested by a web browser. SWs however, run on an isolated
+        thread in the background and do not have access to the DOM. SWs can
+        remain active on a mobile device even when the browser tab or app has
+        been closed. Their job is to listen to events and fire fetch requests
+        and push messages or notifications when the event is triggered.
+      </p>
+      <p>
+        It's important to consider for deployment, that SWs only work on pages
+        that have been served on HTTPS connection. This is because SWs can
+        intercept requests sent by the browser so they need to be secure.
+        Localhost however is an exception for development ease.
+      </p>
+      <h3>SW Lifecyle</h3>
+      <p>
+        SW files are typically placed in the project root so they can have
+        global scope of the project i.e. it has access to any files which it may
+        need through its lifecycle. The first step is to register the file, you
+        can do this through a separate javascript file e.g. app.js. When this
+        happens, the install event gets fired when the browser parses this line
+        of code. This is a useful first step, as we can then perform some
+        functionality like cache media assets.
+      </p>
+      <p>
+        Once registered and installed, the SW becomes active and an active event
+        is triggered where the SW 'listens' for global events in the app.
+      </p>
+      <h3>Altering the SW Code</h3>
+      <p>
+        If the code changes, the next time the page is refreshed, the new SW
+        file will be registered and installed but remains
+        <strong>in waiting</strong> i.e. not active. This is because the old SW
+        code is still active and performing functionality. We need to wait until
+        the old SW completes its lifecycle, then it will be swapped out for the
+        in waiting new SW. Typically, the transition from old to new SW code
+        happens when the app is refreshed or closed to reduce disturbance.
+      </p>
+      <h3>Retreiving data from the database with a PWA</h3>
+      <p>
+        The approach will differ depending on what database solution you implement. Most likely, the IndexedDB API found in dev tools application tab, is commonly used as a temporary store before it is uploaded to the server or as a client-side cache. 
+      </p>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+      integrity="sha512-NiWqa2rceHnN3Z5j6mSAvbwwg3tiwVNxiAQaaSMSXnRRDh5C2mk/+sKQRw8qjV1vN4nf8iK2a0b048PnHbyx+Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

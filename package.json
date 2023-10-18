@@ -1,0 +1,19 @@
+{
+  "name": "notes-app-pwa",
+  "version": "1.0.0",
+  "description": "a CRUD app with basic Progressive Web App features and a firebase backend integration",
+  "main": "index.js",
+  "scripts": {
+    "bundle": "node_modules/.bin/webpack"
+  },
+  "keywords": [],
+  "author": "WK",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^10.5.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
