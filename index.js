@@ -103,8 +103,25 @@ tempNotesArr.forEach((note) => {
 });
 
 /* 
-manually Create data and add to the db 
+Create data and add to the db 
 */
+const formWrapper = document.getElementById("side-form");
+const noteForm = document.querySelector("#side-form .add-note");
+
+function onFormSubmit(e) {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  console.log(e);
+  const inputTitle = formData.get("title");
+  const inputDesc = formData.get("description");
+  console.log(`Title: ${inputTitle}, Description: ${inputDesc}`);
+  formWrapper.style.transform = "translateX(-100%)";
+  noteForm.querySelectorAll("input").forEach((eachInput) => {
+    eachInput.value = "";
+  });
+}
+
+noteForm.addEventListener("submit", onFormSubmit);
 
 // try {
 //   const docRef = await addDoc(toDoNotes, {
