@@ -43,25 +43,28 @@ manually Read the db and output markup
 */
 
 const querySnapshot = await getDocs(toDoNotes);
+
 const tempNotesArr = [];
 querySnapshot.forEach((doc) => {
   // console.log(`${doc.id} => ${doc.data()}`);
 
   let tempNoteObj = {};
 
+  let noteId = doc.id;
   let noteTitle = doc._document.data.value.mapValue.fields.title;
   let noteDesc = doc._document.data.value.mapValue.fields.description;
 
   tempNoteObj = {
     title: noteTitle,
     desc: noteDesc,
+    id: noteId,
   };
 
   tempNotesArr.push(tempNoteObj);
   tempNoteObj = {};
 });
 
-// console.log(tempNotesArr);
+console.log(tempNotesArr);
 
 // inject markup
 const notesWrapper = document.querySelector(".notes-wrapper");
@@ -93,9 +96,10 @@ tempNotesArr.forEach((note) => {
         </div>
   `;
 
-  const markupContent = cardPanel.querySelector(".note-details").children;
-  markupContent[1].textContent = note.title.stringValue;
-  markupContent[2].textContent = note.desc.stringValue;
+  const markupNotesDetails = cardPanel.querySelector(".note-details").children;
+  markupNotesDetails[1].textContent = note.title.stringValue;
+  markupNotesDetails[2].textContent = note.desc.stringValue;
+  cardPanel.id = note.id;
 });
 
 /* 
@@ -116,17 +120,12 @@ manually Create data and add to the db
  Delete a note from db and update UI
 */
 const noteCard = document.querySelectorAll(".card-panel");
-//  notesWrapper.addEventListener('click', (e) => {
-//   if (e.target.className = "note-delete") {
-//     console.log('clicked: ', e.target)
-//   }
-// })
 
 noteCard.forEach((panel) => {
   panel.lastElementChild.addEventListener("click", (e) => {
-    console.log(e);
-    if (e.target === 'img') {
-      console.log(e.target.parentNode);
-    }
+    let deleteId = e.target.parentElement.parentElement.id.toString();
+    console.log(deleteId);
+    e.target.parentElement.parentElement.remove();
+    deleteDoc(doc(db, "notes", deleteId));
   });
 });
