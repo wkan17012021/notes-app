@@ -17,6 +17,7 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
+import { errorToast, successToast } from "./js/toastify";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -41,42 +42,54 @@ const toDoNotes = collection(db, "notes");
 /* 
 manually Read the db and output markup
 */
+let tempNotesArr = [];
 
-const querySnapshot = await getDocs(toDoNotes);
+const getNotes = async () => {
+  try {
+    const querySnapshot = await getDocs(toDoNotes);
+    // console.log( querySnapshot);
+    querySnapshot.forEach((doc) => {
+      // console.log(`${doc.id} => ${doc.data()}`);
+      let tempNoteObj = {};
+      let noteId = doc.id;
+      let noteTitle = doc._document.data.value.mapValue.fields.title;
+      let noteDesc = doc._document.data.value.mapValue.fields.description;
 
-const tempNotesArr = [];
-querySnapshot.forEach((doc) => {
-  // console.log(`${doc.id} => ${doc.data()}`);
+      tempNoteObj = {
+        title: noteTitle,
+        desc: noteDesc,
+        id: noteId,
+      };
 
-  let tempNoteObj = {};
-
-  let noteId = doc.id;
-  let noteTitle = doc._document.data.value.mapValue.fields.title;
-  let noteDesc = doc._document.data.value.mapValue.fields.description;
-
-  tempNoteObj = {
-    title: noteTitle,
-    desc: noteDesc,
-    id: noteId,
-  };
-
-  tempNotesArr.push(tempNoteObj);
-  tempNoteObj = {};
-});
-
-console.log(tempNotesArr);
+      tempNotesArr.push(tempNoteObj);
+      tempNoteObj = {};
+    });
+    // console.log(tempNotesArr);
+    // noteMarkupGenerator(tempNoteObj.title, tempNoteObj.desc, tempNoteObj.id);
+    tempNotesArr.forEach((note) => {
+      noteMarkupGenerator(
+        note.title.stringValue,
+        note.desc.stringValue,
+        note.id
+      );
+    });
+  } catch (error) {
+    console.log("errors: ", error);
+  }
+};
 
 // inject markup
 const notesWrapper = document.querySelector(".notes-wrapper");
-tempNotesArr.forEach((note) => {
-  // console.log(note.title);
 
+/* 
+Function to generate markup
+*/
+function noteMarkupGenerator(noteTitle, noteDesc, id) {
+  console.log(id);
   const cardPanel = notesWrapper.appendChild(document.createElement("div"));
   cardPanel.className = "card-panel note yellow lighten-4 row";
-
   cardPanel.innerHTML += `
-  
-        <img
+  <img
           src="/assets/notepad, pen and plant.jpg"
           alt="A school, office notebook with a white pen and green branches lies on a gray table, desk, background. Place for an inscription. Office. Job. School. Personal diary. View from above. Eucalyptus."
         />
@@ -94,13 +107,21 @@ tempNotesArr.forEach((note) => {
             alt="trash icon delete"
           />
         </div>
-  `;
-
+        `;
   const markupNotesDetails = cardPanel.querySelector(".note-details").children;
-  markupNotesDetails[1].textContent = note.title.stringValue;
-  markupNotesDetails[2].textContent = note.desc.stringValue;
-  cardPanel.id = note.id;
-});
+  cardPanel.id = id;
+  markupNotesDetails[1].textContent = noteTitle;
+  markupNotesDetails[2].textContent = noteDesc;
+  // delete functionality
+  const deleteBtn = cardPanel.children[2];
+
+  deleteBtn.addEventListener("click", (e) => {
+    let deleteId = e.target.parentElement.parentElement.id.toString();
+    // console.log(deleteId);
+    e.target.parentElement.parentElement.remove();
+    deleteDoc(doc(db, "notes", deleteId));
+  });
+}
 
 /* 
 Create data and add to the db 
@@ -108,41 +129,56 @@ Create data and add to the db
 const formWrapper = document.getElementById("side-form");
 const noteForm = document.querySelector("#side-form .add-note");
 
+const checkNoteIsValid = async (noteTitle, noteDesc) => {
+  if (noteTitle && noteDesc) {
+    try {
+      let docRef = await addDoc(toDoNotes, {
+        title: noteTitle,
+        description: noteDesc,
+      });
+      console.log("Doc written with ID: ", docRef.id);
+      noteMarkupGenerator(noteTitle, noteDesc, docRef.id);
+      successToast();
+    } catch (error) {
+      console.log("errors: ", error);
+    }
+  } else {
+    errorToast();
+  }
+};
+
 function onFormSubmit(e) {
   e.preventDefault();
   const formData = new FormData(e.target);
-  console.log(e);
+  // console.log(e);
   const inputTitle = formData.get("title");
   const inputDesc = formData.get("description");
   console.log(`Title: ${inputTitle}, Description: ${inputDesc}`);
+  // add to db first to generate doc id which then needs to be dynamically inserted into UI
+
+  // add to UI
+  checkNoteIsValid(inputTitle, inputDesc);
+
   formWrapper.style.transform = "translateX(-100%)";
   noteForm.querySelectorAll("input").forEach((eachInput) => {
     eachInput.value = "";
   });
 }
 
+/* 
+Delete a note from db and update UI
+*/
+// const noteCard = document.querySelectorAll(".card-panel");
+
+// noteCard.forEach((panel) => {
+//   panel.lastElementChild.addEventListener("click", (e) => {
+//     let deleteId = e.target.parentElement.parentElement.id.toString();
+//     console.log(deleteId);
+//     e.target.parentElement.parentElement.remove();
+//     deleteDoc(doc(db, "notes", deleteId));
+//   });
+// });
+
 noteForm.addEventListener("submit", onFormSubmit);
 
-// try {
-//   const docRef = await addDoc(toDoNotes, {
-//     title: "test-title",
-//     description: "test-description",
-//   });
-//   console.log("Doc written with ID: ", docRef.id);
-// } catch (error) {
-//   console.log("errors: ", error);
-// }
-
-/* 
- Delete a note from db and update UI
-*/
-const noteCard = document.querySelectorAll(".card-panel");
-
-noteCard.forEach((panel) => {
-  panel.lastElementChild.addEventListener("click", (e) => {
-    let deleteId = e.target.parentElement.parentElement.id.toString();
-    console.log(deleteId);
-    e.target.parentElement.parentElement.remove();
-    deleteDoc(doc(db, "notes", deleteId));
-  });
-});
+getNotes();
