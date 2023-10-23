@@ -154,30 +154,15 @@ function onFormSubmit(e) {
   const inputTitle = formData.get("title");
   const inputDesc = formData.get("description");
   console.log(`Title: ${inputTitle}, Description: ${inputDesc}`);
-  // add to db first to generate doc id which then needs to be dynamically inserted into UI
-
-  // add to UI
+  // add to DB, gen id then add to UI
   checkNoteIsValid(inputTitle, inputDesc);
 
   formWrapper.style.transform = "translateX(-100%)";
-  noteForm.querySelectorAll("input").forEach((eachInput) => {
+  noteForm.querySelectorAll(".validate").forEach((eachInput) => {
     eachInput.value = "";
   });
 }
 
-/* 
-Delete a note from db and update UI
-*/
-// const noteCard = document.querySelectorAll(".card-panel");
-
-// noteCard.forEach((panel) => {
-//   panel.lastElementChild.addEventListener("click", (e) => {
-//     let deleteId = e.target.parentElement.parentElement.id.toString();
-//     console.log(deleteId);
-//     e.target.parentElement.parentElement.remove();
-//     deleteDoc(doc(db, "notes", deleteId));
-//   });
-// });
 
 noteForm.addEventListener("submit", onFormSubmit);
 
