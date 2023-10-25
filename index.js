@@ -15,6 +15,7 @@ import {
   collection,
   doc,
   addDoc,
+  updateDoc,
   deleteDoc,
 } from "firebase/firestore";
 import { errorToast, successToast } from "./js/toastify";
@@ -40,10 +41,22 @@ const db = getFirestore(app);
 const toDoNotes = collection(db, "notes");
 
 /* 
+Dom selection variables 
+*/
+// grab the container that wraps all note cards
+const notesWrapper = document.querySelector(".notes-wrapper");
+// get sideform elements for adding notes
+const formWrapper = document.getElementById("side-form");
+const noteForm = document.querySelector("#side-form .add-note");
+// get sideform elements for updating notes
+const formUpdateWrapper = document.getElementById("side-form-update");
+const updateForm = formUpdateWrapper.querySelector(".add-note");
+
+/* 
 manually Read the db and output markup
 */
 let tempNotesArr = [];
-
+let updateIdVar;
 const getNotes = async () => {
   try {
     const querySnapshot = await getDocs(toDoNotes);
@@ -78,16 +91,13 @@ const getNotes = async () => {
   }
 };
 
-// inject markup
-const notesWrapper = document.querySelector(".notes-wrapper");
-
 /* 
 Function to generate markup
 */
 function noteMarkupGenerator(noteTitle, noteDesc, id) {
-  console.log(id);
+  // console.log(id);
   const cardPanel = notesWrapper.appendChild(document.createElement("div"));
-  cardPanel.className = "card-panel note yellow lighten-4 row";
+  cardPanel.className = "card-panel note yellow lighten-4 row hoverable";
   cardPanel.innerHTML += `
   <img
           src="/assets/notepad, pen and plant.jpg"
@@ -102,6 +112,17 @@ function noteMarkupGenerator(noteTitle, noteDesc, id) {
           <p class="note-description"></p>
         </div>
         <div class="note-delete">
+        <a
+        class="sidenav-trigger"
+        data-target="side-form-update"
+        > 
+        <img
+            src="/assets/icons/write-svgrepo-com.svg"
+            alt="update icon"
+            data-target="side-form-update"
+          />
+        </a>
+       
           <img
             src="/assets/icons/trash-can-svgrepo-com.svg"
             alt="trash icon delete"
@@ -112,33 +133,60 @@ function noteMarkupGenerator(noteTitle, noteDesc, id) {
   cardPanel.id = id;
   markupNotesDetails[1].textContent = noteTitle;
   markupNotesDetails[2].textContent = noteDesc;
-  // delete functionality
-  const deleteBtn = cardPanel.children[2];
 
+  // update functionality
+  const updateBtn = cardPanel.children[2].children[0];
+  updateBtn.addEventListener("click", (e) => {
+    let selectednoteTitle =
+      e.target.parentElement.parentElement.previousElementSibling.children[1]
+        .textContent;
+    let selectednoteDesc =
+      e.target.parentElement.parentElement.previousElementSibling.children[2]
+        .textContent;
+    let updateId =
+      e.target.parentElement.parentElement.parentElement.id.toString();
+    updateIdVar = updateId;
+    // inject current note title and desc values as placeholder text into update form
+    // tried to change input.value but couldn't work out how to send updated values to db and UI as well as reset to empty string
+    updateForm.updateTitle.placeholder = selectednoteTitle;
+    updateForm.updateDescription.placeholder = selectednoteDesc;
+  });
+
+  // delete functionality
+  const deleteBtn = cardPanel.children[2].children[1];
   deleteBtn.addEventListener("click", (e) => {
     let deleteId = e.target.parentElement.parentElement.id.toString();
-    // console.log(deleteId);
     e.target.parentElement.parentElement.remove();
     deleteDoc(doc(db, "notes", deleteId));
   });
 }
 
 /* 
-Create data and add to the db 
+Create data and perform basic check, then add to the db 
 */
-const formWrapper = document.getElementById("side-form");
-const noteForm = document.querySelector("#side-form .add-note");
 
 const checkNoteIsValid = async (noteTitle, noteDesc) => {
   if (noteTitle && noteDesc) {
     try {
-      let docRef = await addDoc(toDoNotes, {
-        title: noteTitle,
-        description: noteDesc,
-      });
-      console.log("Doc written with ID: ", docRef.id);
-      noteMarkupGenerator(noteTitle, noteDesc, docRef.id);
-      successToast();
+      if (!updateIdVar) {
+        let docRef = await addDoc(toDoNotes, {
+          title: noteTitle,
+          description: noteDesc,
+        });
+        console.log("Doc written with ID: ", docRef.id);
+        noteMarkupGenerator(noteTitle, noteDesc, docRef.id);
+      } else {
+        await updateDoc(doc(db, "notes", updateIdVar), {
+          title: noteTitle,
+          description: noteDesc,
+        });
+        successToast();
+        let updateNoteElm = document.getElementById(updateIdVar);
+        console.log(updateNoteElm);
+        updateNoteElm.querySelector(".note-title").textContent = noteTitle;
+        updateNoteElm.querySelector(".note-description").textContent = noteDesc;
+        updateIdVar = "";
+      }
     } catch (error) {
       console.log("errors: ", error);
     }
@@ -150,7 +198,7 @@ const checkNoteIsValid = async (noteTitle, noteDesc) => {
 function onFormSubmit(e) {
   e.preventDefault();
   const formData = new FormData(e.target);
-  // console.log(e);
+  console.log(formData);
   const inputTitle = formData.get("title");
   const inputDesc = formData.get("description");
   console.log(`Title: ${inputTitle}, Description: ${inputDesc}`);
@@ -163,7 +211,24 @@ function onFormSubmit(e) {
   });
 }
 
+function onFormUpdate(e) {
+  e.preventDefault();
+  const updatedformData = new FormData(e.target);
+  console.log(updatedformData);
+  const inputUpdateTitle = updatedformData.get("updateTitle");
+  let inputUpdateDesc = updatedformData.get("updateDescription");
+  console.log(`Title: ${inputUpdateTitle}, Description: ${inputUpdateDesc}`);
+  // add to DB, gen id then add to UI
+  checkNoteIsValid(inputUpdateTitle, inputUpdateDesc);
+
+  formUpdateWrapper.style.transform = "translateX(-100%)";
+  updateForm.querySelectorAll(".validate").forEach((eachInput) => {
+    eachInput.value = "";
+  });
+}
 
 noteForm.addEventListener("submit", onFormSubmit);
+updateForm.addEventListener("submit", onFormUpdate);
 
+// call getNotes to render on page load
 getNotes();

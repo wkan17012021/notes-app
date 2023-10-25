@@ -88,6 +88,12 @@ body {
   position: absolute;
   bottom: 0px;
   right: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.note-delete > * {
   cursor: pointer;
 }
 .note-title {
