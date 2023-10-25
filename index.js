@@ -100,12 +100,12 @@ function noteMarkupGenerator(noteTitle, noteDesc, id) {
   cardPanel.className = "card-panel note yellow lighten-4 row hoverable";
   cardPanel.innerHTML += `
   <img
-          src="/assets/notepad, pen and plant.jpg"
+          src="./assets/notepad, pen and plant.jpg"
           alt="A school, office notebook with a white pen and green branches lies on a gray table, desk, background. Place for an inscription. Office. Job. School. Personal diary. View from above. Eucalyptus."
         />
         <div class="note-details">
           <img
-            src="/assets/notes-note-svgrepo-com.svg"
+            src="./assets/notes-note-svgrepo-com.svg"
             alt="notes icon thumbnail"
           />
           <h2 class="note-title"></h2>
@@ -117,14 +117,14 @@ function noteMarkupGenerator(noteTitle, noteDesc, id) {
         data-target="side-form-update"
         > 
         <img
-            src="/assets/icons/write-svgrepo-com.svg"
+            src="./assets/icons/write-svgrepo-com.svg"
             alt="update icon"
             data-target="side-form-update"
           />
         </a>
        
           <img
-            src="/assets/icons/trash-can-svgrepo-com.svg"
+            src="./assets/icons/trash-can-svgrepo-com.svg"
             alt="trash icon delete"
           />
         </div>
