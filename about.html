@@ -6,7 +6,7 @@
     <title>PWA Notes App</title>
     <link
       rel="shortcut icon"
-      href="/assets/notes-note-svgrepo-com.svg"
+      href="./assets/notes-note-svgrepo-com.svg"
       type="image/x-icon"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -21,9 +21,9 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/css/styles.css" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="apple-touch-icon" href="/assets/icons/icon-96x96.png" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon-96x96.png" />
     <meta name="apple-mobile-web-app-status-bar" content="#aa7700" />
     <meta name="theme-color" content="#FFE1C4" />
   </head>
@@ -45,18 +45,9 @@
 
     <!-- side nav -->
     <ul id="side-menu" class="sidenav side-menu">
-      <li><a href="/" class="waves-effect">Home</a></li>
-      <li><a href="/about.html" class="waves-effect">About</a></li>
+      <li><a href="./index.html" class="waves-effect">Home</a></li>
+      <li><a href="./about.html" class="waves-effect">About</a></li>
       <li><div class="divider"></div></li>
-      <li>
-        <a href="/contact.html" class="waves-effect">
-          <img
-            src="./assets/icons/mail-svgrepo-com.svg"
-            alt="envelope contact icon"
-          />
-          Contact</a
-        >
-      </li>
     </ul>
 
     <!-- content -->
@@ -125,7 +116,10 @@
       </p>
       <h3>Retreiving data from the database with a PWA</h3>
       <p>
-        The approach will differ depending on what database solution you implement. Most likely, the IndexedDB API found in dev tools application tab, is commonly used as a temporary store before it is uploaded to the server or as a client-side cache. 
+        The approach will differ depending on what database solution you
+        implement. Most likely, the IndexedDB API found in dev tools application
+        tab, is commonly used as a temporary store before it is uploaded to the
+        server or as a client-side cache.
       </p>
     </div>
 
@@ -135,7 +129,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="/js/ui.js"></script>
-    <script src="/js/app.js"></script>
+    <script src="./js/ui.js"></script>
+    <script src="./js/app.js"></script>
   </body>
 </html>
