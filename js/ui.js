@@ -3,14 +3,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const menus = document.querySelectorAll(".side-menu");
   M.Sidenav.init(menus, { edge: "right" });
 
-  // add notes form
+  // add notes form, using 'M' materialize library, initialise the side form and have it appear on the left edge of the page
   const forms = document.querySelectorAll(".side-form");
   M.Sidenav.init(forms, {
     edge: "left",
     draggable: true,
     preventScrolling: true,
   });
-  // update notes form
+  // update notes form, same as above
   const updateForm = document.querySelector(".side-form-update");
   //
   M.Sidenav.init(updateForm, {
