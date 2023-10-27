@@ -10,6 +10,7 @@ const requestURLs = [
   "/css/styles.css",
   "/js/app.js",
   "/js/ui.js",
+  "/dist/bundle.js",
   "/js/materialize.min.js",
   "/assets/notepad, pen and plant.jpg",
   "/404.html",
