@@ -4,20 +4,20 @@ const staticCache = "site-static-v1";
 const dynamicCache = "site-dynamic-v1"; // this cache for other pages
 
 const requestURLs = [
-  "/index.html",
-  "/css/materialize.min.css",
-  "/css/styles.css",
-  "/js/app.js",
-  "/js/ui.js",
-  "/dist/bundle.js",
-  "/js/materialize.min.js",
-  "/assets/notepad, pen and plant.jpg",
-  "/404.html",
-  "/assets/404-image.jpg",
-  "/assets/img-placeholder.jpg",
-  "/assets/notes-note-svgrepo-com.svg",
-  "/assets/icons/burger-menu-right-svgrepo-com.svg",
-  "/assets/icons/trash-can-svgrepo-com.svg",
+  "./index.html",
+  "./css/materialize.min.css",
+  "./css/styles.css",
+  "./js/app.js",
+  "./js/ui.js",
+  "./dist/bundle.js",
+  "./js/materialize.min.js",
+  "./assets/notepad, pen and plant.jpg",
+  "./404.html",
+  "./assets/404-image.jpg",
+  "./assets/img-placeholder.jpg",
+  "./assets/notes-note-svgrepo-com.svg",
+  "./assets/icons/burger-menu-right-svgrepo-com.svg",
+  "./assets/icons/trash-can-svgrepo-com.svg",
 ];
 
 // Limit cache size function - read the explanation of .open, .keys() which are used in the install, activate, fetch handlers. Below, we are checking if the number of cache keys for a specific cache name exceeds a size, if so delete the first item of the cache array which is assumed to be the oldest. We have to rerun the function in the .then() until the number of keys in the cache doesn not exceed its size. We then invoke this function whenever we add to the cache, which is in the fetch event handler.
