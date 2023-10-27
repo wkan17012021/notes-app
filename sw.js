@@ -98,32 +98,32 @@ What happens if a user navigates to the homepage and then the about page whilst 
 */
 self.addEventListener("fetch", (event) => {
   //   console.log("fetch event fired. In console, open up the event object and search for request URL for the resource being fetched.", event);
-  // event.respondWith(
-  //   caches
-  //     .match(event.request)
-  //     .then((cacheRes) => {
-  //       return (
-  //         cacheRes ||
-  //         fetch(event.request).then((fetchRes) => {
-  //           return caches.open(dynamicCache).then((cache) => {
-  //             cache.put(event.request.url, fetchRes.clone());
-  //             limitCacheSize(dynamicCache, 20);
-  //             return fetchRes;
-  //           });
-  //         })
-  //       );
-  //     })
-  //     .catch(() => {
-  //       const eru = event.request.url;
-  //       if (eru.includes(".html")) {
-  //         return caches.match("/404.html");
-  //       } else if (
-  //         eru.includes(".jpg") ||
-  //         eru.includes(".jpeg") ||
-  //         eru.includes(".png")
-  //       ) {
-  //         return caches.match("/assets/img-placeholder.jpg");
-  //       }
-  //     })
-  // );
+  event.respondWith(
+    caches
+      .match(event.request)
+      .then((cacheRes) => {
+        return (
+          cacheRes ||
+          fetch(event.request).then((fetchRes) => {
+            return caches.open(dynamicCache).then((cache) => {
+              cache.put(event.request.url, fetchRes.clone());
+              limitCacheSize(dynamicCache, 20);
+              return fetchRes;
+            });
+          })
+        );
+      })
+      .catch(() => {
+        const eru = event.request.url;
+        if (eru.includes(".html")) {
+          return caches.match("/404.html");
+        } else if (
+          eru.includes(".jpg") ||
+          eru.includes(".jpeg") ||
+          eru.includes(".png")
+        ) {
+          return caches.match("/assets/img-placeholder.jpg");
+        }
+      })
+  );
 });
