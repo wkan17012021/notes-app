@@ -1,6 +1,7 @@
 {
     "name": "PWA Notes App",
     "short_name": "Notes App",
+    "scope": "/notes-app/",
     "start_url": "/notes-app/",
     "display": "standalone",
     "background_color": "#FFE9D2",
