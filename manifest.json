@@ -1,8 +1,8 @@
 {
     "name": "PWA Notes App",
     "short_name": "Notes App",
-    "scope": "/notes-app/",
-    "start_url": "/notes-app/",
+    "scope": "https://wkan17012021.github.io/notes-app/",
+    "start_url": "https://wkan17012021.github.io/notes-app/",
     "display": "standalone",
     "background_color": "#FFE9D2",
     "theme_color": "#FFE1C4",
