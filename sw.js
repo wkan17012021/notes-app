@@ -4,6 +4,8 @@ const staticCache = "site-static-v1";
 const dynamicCache = "site-dynamic-v1"; // this cache for other pages
 
 const requestURLs = [
+  "/",
+  "./",
   "./index.html",
   "./css/materialize.min.css",
   "./css/styles.css",
