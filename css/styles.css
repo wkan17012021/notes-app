@@ -64,6 +64,10 @@ body {
 .notes-wrapper {
   margin-top: 20px;
 }
+.notes-wrapper .center{
+  display: flex;
+  justify-content: center;
+}
 .card-panel.note {
   border-radius: 8px;
   padding: 10px;
@@ -111,10 +115,17 @@ input {
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
 }
-.side-form button {
+.side-form button,
+#btnLogin,
+#btnSignup {
   background: var(--title);
   box-shadow: 1px 1px 3px rgba(90, 90, 90, 0.2);
 }
 form .input-field {
   margin-top: 30px;
+}
+
+
+#side-menu > li:last-child {
+  padding: 0 32px;
 }

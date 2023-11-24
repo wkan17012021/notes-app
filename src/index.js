@@ -8,7 +8,27 @@ Now, when you add the main.js script into the app, you may find the code in a ha
 We can use a source map to make the code more legible. We setup webpack.config.js which includes utilities like copying files, minifying, start a dev server and JS bundling. This is useful as the bundler can remove unused JS code from the production environment which results in a performance boost by not loading unnecessary code, known as tree shaking.
 See webpack.config.js for notes.
 */
+
+const authFormWrapper = document.getElementById("loginFormWrapper");
+const txtEmail = document.getElementById("txtEmail");
+const txtPassword = document.getElementById("txtPassword");
+
+const btnLogin = document.getElementById("btnLogin");
+const btnSignup = document.getElementById("btnSignup");
+const btnLogout = document.getElementById("btnLogout");
+
+const divLoginError = document.getElementById("divLoginError");
+const labelErrorMessage = document.getElementById("labelErrMsg");
+
 import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+
 import {
   getFirestore,
   getDocs,
@@ -18,7 +38,16 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { errorToast, successToast } from "./js/toastify";
+
+import { materialize } from "./materialize.min.js";
+import { appUI } from "./ui.js";
+import Toastify from "toastify-js";
+import {
+  errorToast,
+  successToast,
+  successUpdateToast,
+  errorLoginToast,
+} from "./customToasts";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -34,6 +63,74 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Authentication: Signing Up
+const signUpEmailPassword = async () => {
+  const signUptextEmailVal = txtEmail.value;
+  const signUptextPasswordVal = txtPassword.value;
+
+  createUserWithEmailAndPassword(
+    auth,
+    signUptextEmailVal,
+    signUptextPasswordVal
+  )
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log(user);
+      alert(
+        "Thank you for registering. Please use login credentials to access app."
+      );
+    })
+    .catch((err) => {
+      alert("An error occurred: " + err.message);
+    });
+};
+
+// Authentication: Logging In
+const loggingInEmailPassword = async () => {
+  const logIntextEmailVal = txtEmail.value;
+  const logIntextPasswordVal = txtPassword.value;
+
+  signInWithEmailAndPassword(auth, logIntextEmailVal, logIntextPasswordVal)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      labelErrorMessage.textContent = "Welcome to the notes app.";
+    })
+    .catch((err) => {
+      labelErrorMessage.textContent = `${err.message}`;
+      errorLoginToast();
+    });
+};
+
+// Authentication: check auth state
+const checkAuthState = async () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      authFormWrapper.style.display = "none";
+      btnLogout.style.display = "block";
+      notesWrapper.style.display = "block";
+      document.querySelector(".add-btn").style.display = "block";
+      getNotes();
+    } else {
+      authFormWrapper.style.display = "block";
+      btnLogout.style.display = "none";
+      document.querySelector(".add-btn").style.display = "none";
+    }
+  });
+};
+
+// Authentication: user sign out
+const userSignOut = async () => {
+  await signOut(auth);
+  notesWrapper.style.display = "none";
+};
+checkAuthState();
+
+document.querySelector(".add-btn").style.display = "none";
+btnLogin.addEventListener("click", loggingInEmailPassword);
+btnSignup.addEventListener("click", signUpEmailPassword);
+btnLogout.addEventListener("click", userSignOut);
 
 // Use Firebase services - database
 const db = getFirestore(app);
@@ -173,14 +270,15 @@ const checkNoteIsValid = async (noteTitle, noteDesc) => {
           title: noteTitle,
           description: noteDesc,
         });
-        console.log("Doc written with ID: ", docRef.id);
+        // console.log("Doc written with ID: ", docRef.id);
         noteMarkupGenerator(noteTitle, noteDesc, docRef.id);
+        successToast();
       } else {
         await updateDoc(doc(db, "notes", updateIdVar), {
           title: noteTitle,
           description: noteDesc,
         });
-        successToast();
+        successUpdateToast();
         let updateNoteElm = document.getElementById(updateIdVar);
         console.log(updateNoteElm);
         updateNoteElm.querySelector(".note-title").textContent = noteTitle;
@@ -199,8 +297,8 @@ function onFormSubmit(e) {
   e.preventDefault();
   const formData = new FormData(e.target);
   console.log(formData);
-  const inputTitle = formData.get("title");
-  const inputDesc = formData.get("description");
+  const inputTitle = formData.get("title").trim();
+  const inputDesc = formData.get("description").trim();
   console.log(`Title: ${inputTitle}, Description: ${inputDesc}`);
   // add to DB, gen id then add to UI
   checkNoteIsValid(inputTitle, inputDesc);
@@ -229,6 +327,3 @@ function onFormUpdate(e) {
 
 noteForm.addEventListener("submit", onFormSubmit);
 updateForm.addEventListener("submit", onFormUpdate);
-
-// call getNotes to render on page load
-getNotes();
