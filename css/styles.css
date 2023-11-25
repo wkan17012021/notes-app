@@ -64,7 +64,7 @@ body {
 .notes-wrapper {
   margin-top: 20px;
 }
-.notes-wrapper .center{
+.notes-wrapper .center {
   display: flex;
   justify-content: center;
 }
@@ -78,7 +78,8 @@ body {
   gap: 10px;
   position: relative;
 }
-.note img {
+/* select the img that is a direct descendant of .card-panel */
+.card-panel > img:first-child {
   grid-area: image;
   max-width: 164px;
 }
@@ -102,9 +103,12 @@ body {
 .note-title {
   font-weight: bold;
   font-size: 2rem;
+  overflow-wrap: anywhere;
+  margin: 1.2rem 0 1rem 0;
 }
 .note-description {
   font-size: 1.2em;
+  overflow-wrap: anywhere;
 }
 
 /* form-styles */
@@ -124,7 +128,6 @@ input {
 form .input-field {
   margin-top: 30px;
 }
-
 
 #side-menu > li:last-child {
   padding: 0 32px;
