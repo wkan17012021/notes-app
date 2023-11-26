@@ -17,9 +17,6 @@ const btnLogin = document.getElementById("btnLogin");
 const btnSignup = document.getElementById("btnSignup");
 const btnLogout = document.getElementById("btnLogout");
 
-const divLoginError = document.getElementById("divLoginError");
-const labelErrorMessage = document.getElementById("labelErrMsg");
-
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -44,6 +41,8 @@ import { appUI } from "./ui.js";
 import Toastify from "toastify-js";
 import {
   errorToast,
+  successLoginToast,
+  successSignUpToast,
   successToast,
   successUpdateToast,
   errorLoginToast,
@@ -78,9 +77,7 @@ const signUpEmailPassword = async () => {
     .then((userCredential) => {
       const user = userCredential.user;
       console.log(user);
-      alert(
-        "Thank you for registering. Please use login credentials to access app."
-      );
+      successSignUpToast();
     })
     .catch((err) => {
       alert("An error occurred: " + err.message);
@@ -89,16 +86,19 @@ const signUpEmailPassword = async () => {
 
 // Authentication: Logging In
 const loggingInEmailPassword = async () => {
-  const logIntextEmailVal = txtEmail.value;
-  const logIntextPasswordVal = txtPassword.value;
+  let logIntextEmailVal = txtEmail.value;
+  let logIntextPasswordVal = txtPassword.value;
 
   signInWithEmailAndPassword(auth, logIntextEmailVal, logIntextPasswordVal)
     .then((userCredential) => {
       const user = userCredential.user;
-      labelErrorMessage.textContent = "Welcome to the notes app.";
+      successLoginToast();
+      checkAuthState();
+      txtEmail.value = "";
+      txtPassword.value = "";
     })
     .catch((err) => {
-      labelErrorMessage.textContent = `${err.message}`;
+      console.log("An error occurred when logging in: ".err);
       errorLoginToast();
     });
 };
@@ -156,24 +156,31 @@ let tempNotesArr = [];
 let updateIdVar;
 const getNotes = async () => {
   try {
-    const querySnapshot = await getDocs(toDoNotes);
-    // console.log( querySnapshot);
-    querySnapshot.forEach((doc) => {
-      // console.log(`${doc.id} => ${doc.data()}`);
-      let tempNoteObj = {};
-      let noteId = doc.id;
-      let noteTitle = doc._document.data.value.mapValue.fields.title;
-      let noteDesc = doc._document.data.value.mapValue.fields.description;
+    if (notesWrapper.contains(document.querySelector(".card-panel"))) {
+      console.log(notesWrapper);
+      console.log("contains card panels");
+      return;
+    } else {
+      const querySnapshot = await getDocs(toDoNotes);
+      // console.log( querySnapshot);
+      querySnapshot.forEach((doc) => {
+        // console.log(`${doc.id} => ${doc.data()}`);
+        let tempNoteObj = {};
+        let noteId = doc.id;
+        let noteTitle = doc._document.data.value.mapValue.fields.title;
+        let noteDesc = doc._document.data.value.mapValue.fields.description;
 
-      tempNoteObj = {
-        title: noteTitle,
-        desc: noteDesc,
-        id: noteId,
-      };
+        tempNoteObj = {
+          title: noteTitle,
+          desc: noteDesc,
+          id: noteId,
+        };
 
-      tempNotesArr.push(tempNoteObj);
-      tempNoteObj = {};
-    });
+        tempNotesArr.push(tempNoteObj);
+        tempNoteObj = {};
+      });
+    }
+
     // console.log(tempNotesArr);
     // noteMarkupGenerator(tempNoteObj.title, tempNoteObj.desc, tempNoteObj.id);
     tempNotesArr.forEach((note) => {
@@ -193,12 +200,13 @@ Function to generate markup
 */
 function noteMarkupGenerator(noteTitle, noteDesc, id) {
   // console.log(id);
+
   const cardPanel = notesWrapper.appendChild(document.createElement("div"));
   cardPanel.className = "card-panel note yellow lighten-4 row hoverable";
   cardPanel.innerHTML += `
   <img
           src="./assets/notepad, pen and plant.jpg"
-          alt="A school, office notebook with a white pen and green branches lies on a gray table, desk, background. Place for an inscription. Office. Job. School. Personal diary. View from above. Eucalyptus."
+          alt="A school, office notebook with a white pen and green branches lies on a gray table, desk, background."
         />
         <div class="note-details">
           <img

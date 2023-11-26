@@ -40,7 +40,40 @@ noteAddBtn.addEventListener("click", function () {
 
 */
 
-// Displaying toast if the note was added successfully
+export const successLoginToast = () => {
+  Toastify({
+    text: "Welcome to the Notes app!",
+    color: "black",
+    duration: 3000,
+    newWindow: true,
+    close: false,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: "linear-gradient(to right, #000, var(--title))",
+      borderRadius: "8px",
+    },
+  }).showToast();
+};
+
+export const successSignUpToast = () => {
+  Toastify({
+    text: "Successfully Registered. Welcome!",
+    color: "black",
+    duration: 3000,
+    newWindow: true,
+    close: false,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: "linear-gradient(to right, #000, var(--title))",
+      borderRadius: "8px",
+    },
+  }).showToast();
+};
+
 export const successToast = () => {
   Toastify({
     text: "New Note added!",

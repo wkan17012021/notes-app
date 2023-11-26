@@ -55,9 +55,8 @@ h1 {
 body {
   min-height: 100svh;
 }
-.side-menu li:last-child a {
-  display: flex;
-  gap: 12px;
+#side-menu li:last-child {
+  margin-top: 1rem;
 }
 
 /* notes styles */
