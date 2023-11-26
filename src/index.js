@@ -51,7 +51,7 @@ import {
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration - yes apparently this is safe to have db config on the client side!
-require("dotenv").config();
+// require("dotenv").config();
 const firebaseConfig = {
   apiKey: "AIzaSyDIeXz_82F-_p1SaLzBe2vNAXltdRwoOYM",
   authDomain: "notes-app-pwa.firebaseapp.com",
