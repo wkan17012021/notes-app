@@ -4,9 +4,9 @@ This is a repo for learning about progressive web applications. The app is for b
 
 ## Development Architecture
 
-- Vanilla HTML, no templating etc. used. This enabled markup to be quickly added for iterative development and fine-tuned when the app grew.
+- MaterializeCSS markup components. This enabled markup to be quickly added and interactive features to be used without spending unnecessary time working out the UI.
 - MaterializeCSS framework inline-class names to reduce time spent on custom styling. Helped to build static and dynamic components with appropriate aesthetic appearance. Some custom styling had to be used as the framework is not utility based.
-- Vanilla JavaScript to keep improving on base JS knowledge: DOM traversing, DOM manipulation, custom functions etc. Could have used a library or framework which may have improved state management and maintenance of the code but elected not to on this project.
+- Vanilla JavaScript to keep improving on base JS knowledge: DOM traversing, DOM manipulation, custom functions etc. Could have used a library or framework which may have improved state management and maintenance of the code, if the project increases in use and complexity, then one should be reached for.
 - Toastify.js npm package as a notification for successful and failed note submissions. But this is purely for UX.
 - Webpack config bundler which was recommended with Firebase integration. This is useful as the bundler can remove unused JS code from the production environment which results in a performance boost by not loading unnecessary code, known as **tree shaking**.
 
@@ -25,6 +25,8 @@ If you want to make changes the the JS code, upate using the webpack bundler run
 ```
 
 Then use a local host server to run in development env.
+You will also need to register to FireStore Firebase, retrieve your own API key and set it in the firebaseConfig object, if you want to edit the code.
+(Guide on abstracting secrets and .env file use for GitHub Pages)[https://github.com/orgs/community/discussions/57070]
 
 Note this proj uses a "eval-source-map" development tool to improve readability to make debugging easier. Ideally shouldn't be implmented and JS should be hashed back to a compressed and unreadable format, for commercial production apps.
 

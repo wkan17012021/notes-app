@@ -10,6 +10,7 @@
   "author": "WK",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "firebase": "^10.5.0",
     "toastify-js": "^1.12.0"
   },

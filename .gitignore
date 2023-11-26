@@ -5,3 +5,4 @@ dist/
 markup.html
 backup.js
 .env
+.env_sample
