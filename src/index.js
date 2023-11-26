@@ -52,7 +52,7 @@ import {
 
 // Your web app's Firebase configuration - yes apparently this is safe to have db config on the client side!
 const firebaseConfig = {
-  apiKey: "AIzaSyDIeXz_82F-_p1SaLzBe2vNAXltdRwoOYM",
+  apiKey: process.env.API_KEY,
   authDomain: "notes-app-pwa.firebaseapp.com",
   projectId: "notes-app-pwa",
   storageBucket: "notes-app-pwa.appspot.com",
@@ -156,31 +156,24 @@ let tempNotesArr = [];
 let updateIdVar;
 const getNotes = async () => {
   try {
-    if (notesWrapper.contains(document.querySelector(".card-panel"))) {
-      console.log(notesWrapper);
-      console.log("contains card panels");
-      return;
-    } else {
-      const querySnapshot = await getDocs(toDoNotes);
-      // console.log( querySnapshot);
-      querySnapshot.forEach((doc) => {
-        // console.log(`${doc.id} => ${doc.data()}`);
-        let tempNoteObj = {};
-        let noteId = doc.id;
-        let noteTitle = doc._document.data.value.mapValue.fields.title;
-        let noteDesc = doc._document.data.value.mapValue.fields.description;
+    const querySnapshot = await getDocs(toDoNotes);
+    // console.log( querySnapshot);
+    querySnapshot.forEach((doc) => {
+      // console.log(`${doc.id} => ${doc.data()}`);
+      let tempNoteObj = {};
+      let noteId = doc.id;
+      let noteTitle = doc._document.data.value.mapValue.fields.title;
+      let noteDesc = doc._document.data.value.mapValue.fields.description;
 
-        tempNoteObj = {
-          title: noteTitle,
-          desc: noteDesc,
-          id: noteId,
-        };
+      tempNoteObj = {
+        title: noteTitle,
+        desc: noteDesc,
+        id: noteId,
+      };
 
-        tempNotesArr.push(tempNoteObj);
-        tempNoteObj = {};
-      });
-    }
-
+      tempNotesArr.push(tempNoteObj);
+      tempNoteObj = {};
+    });
     // console.log(tempNotesArr);
     // noteMarkupGenerator(tempNoteObj.title, tempNoteObj.desc, tempNoteObj.id);
     tempNotesArr.forEach((note) => {
