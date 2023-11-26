@@ -4,3 +4,4 @@ main.js.LICENSE.txt
 dist/
 markup.html
 backup.js
+.env
