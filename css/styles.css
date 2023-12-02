@@ -123,6 +123,7 @@ input {
 #btnSignup {
   background: var(--title);
   box-shadow: 1px 1px 3px rgba(90, 90, 90, 0.2);
+  margin-bottom: 1rem;
 }
 form .input-field {
   margin-top: 30px;

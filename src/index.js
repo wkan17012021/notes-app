@@ -108,11 +108,11 @@ const loggingInEmailPassword = async () => {
 const checkAuthState = async () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      getNotes();
       authFormWrapper.style.display = "none";
       btnLogout.style.display = "block";
       notesWrapper.style.display = "block";
       document.querySelector(".add-btn").style.display = "block";
-      getNotes();
     } else {
       authFormWrapper.style.display = "block";
       btnLogout.style.display = "none";

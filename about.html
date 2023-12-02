@@ -3,29 +3,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>PWA Notes App</title>
+    <link rel="stylesheet" href="./css/materialize.min.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="canonical" href="https://github.com/wkan17012021/notes-app/" />
     <link
       rel="shortcut icon"
       href="./assets/notes-note-svgrepo-com.svg"
       type="image/x-icon"
     />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-      integrity="sha512-UJfAaOlIRtdR+0P6C3KUoTDAxVTuy3lnSXLyLKlHYJlcSU8Juge/mjeaxDNMlw9LgeIotgz5FP8eUQPhX1q10A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./css/styles.css" />
-    <link rel="manifest" href="./manifest.json" />
     <link rel="apple-touch-icon" href="./assets/icons/icon-96x96.png" />
     <meta name="apple-mobile-web-app-status-bar" content="#aa7700" />
     <meta name="theme-color" content="#FFE1C4" />
+    <title>PWA Notes App</title>
   </head>
   <body class="grey lighten-4">
     <!-- top nav -->
@@ -46,30 +36,50 @@
     </nav>
 
     <!-- side nav -->
-    <ul id="side-menu" class="sidenav side-menu">
+    <ul id="side-menu" class="sidenav side-menu yellow lighten-5">
       <li><a href="./index.html" class="waves-effect">Home</a></li>
-      <li><a href="./about.html" class="waves-effect">About</a></li>
+      <li><a href="./about.html" class="waves-effect">About this App</a></li>
       <li><div class="divider"></div></li>
     </ul>
 
     <!-- content -->
-    <div class="container grey-text">
-      <h1>
-        Creating a progressive web app with HTML, CSS, JS and Firebase backend
-        service
-      </h1>
-      <h2>Manifest JSON file</h2>
+    <div class="container">
+      <h2 class="header center orange-text">Creating a progressive web app</h2>
+      <h3>Simulating web app install</h3>
+      <p>
+        If viewing this app on a smartphone browser, navigate to home screen,
+        then tap on your browser settings. Look for an option to install app -
+        screenshot for guidance below.
+      </p>
+      <img
+        class="materialboxed"
+        src="./assets/screenshot-phone-install-pwa-app.jpg"
+        alt="a screenshot of a mobile browser showing the reader an Install app option circled in red"
+      />
+      <h3>Manifest JSON file</h3>
       <p>
         This is a single json file which provides metadata about our application
-        to the browser. The manifest file for this app includes the naming, the
-        url that should load when the user clicks or taps the icon to open the
-        app. The display type which can be set to browser, if you want the app
-        to open in a users preferred browser. Otherwise, set to standalone which
-        will load natively like a mobile app. Background color which will be
-        shown when the app loads (splash screen). Icons array to load
-        appropriately for different devices.
+        to the browser. The manifest file for this app includes:
       </p>
-      <h2>Service Workers (SWs)</h2>
+      <ul>
+        <li>the naming</li>
+        <li>
+          the url that should load when the user clicks or taps the icon to open
+          the app
+        </li>
+        <li>
+          the display type which can be set to browser, if you want the app to
+          open in a users preferred browser. Otherwise, set to standalone which
+          will load natively like a mobile app
+        </li>
+        <li>
+          Background color which will be shown when the app loads (splash
+          screen)
+        </li>
+        <li>Icons array to load appropriately for different devices</li>
+      </ul>
+
+      <h3>Service Workers (SWs)</h3>
       <p>
         Perhaps the most crucial component to a PWA. These javascript files
         allow for loading content when offline. When the user interacts when
@@ -77,7 +87,7 @@
         background sync. SWs allow for push notifications - notifications on new
         content, messages, updated content etc.
       </p>
-      <h3>How do SWs operate?</h3>
+      <h4>How do SWs operate?</h4>
       <p>
         Traditionally, JS files are tightly coupled with the DOM along a single
         thread when requested by a web browser. SWs however, run on an isolated
@@ -92,7 +102,7 @@
         intercept requests sent by the browser so they need to be secure.
         Localhost however is an exception for development ease.
       </p>
-      <h3>SW Lifecyle</h3>
+      <h4>SW Lifecyle</h4>
       <p>
         SW files are typically placed in the project root so they can have
         global scope of the project i.e. it has access to any files which it may
@@ -125,13 +135,7 @@
       </p>
     </div>
 
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
-      integrity="sha512-NiWqa2rceHnN3Z5j6mSAvbwwg3tiwVNxiAQaaSMSXnRRDh5C2mk/+sKQRw8qjV1vN4nf8iK2a0b048PnHbyx+Q=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="./js/ui.js"></script>
-    <script src="./js/app.js"></script>
+    <script src="./src/materialize.min.js"></script>
+    <script src="./src/ui.js"></script>
   </body>
 </html>

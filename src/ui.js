@@ -20,4 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
     draggable: true,
     preventScrolling: true,
   });
+  const lightBoxElms = document.querySelectorAll(".materialboxed");
+  M.Materialbox.init(lightBoxElms, {
+    inDuration: 300,
+    outDuration: 200,
+  });
 });
